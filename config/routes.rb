@@ -10,6 +10,8 @@ Rails.application.routes.draw do
       resources :subscriptions
       resources :products
       post :orders, to: 'orders#create'
+      post :payment_intents, to: 'payment_intents#create'
+      post :checkout, to: 'checkout#create'
     end
   end
 end

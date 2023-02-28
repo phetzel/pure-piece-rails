@@ -23,6 +23,7 @@ class Api::V1::ProductsController < ApplicationController
                 :images, 
                 :name, 
                 :price,
+                :priceId
             ]
     end
 
