@@ -46,5 +46,10 @@ group :development do
   # gem "spring"
 end
 
+# user auth
 gem 'devise'
 gem 'devise-jwt'
+
+# stripe payment processor
+gem 'stripe' 
+# gem 'stripe-ruby-mock', '~> 3.0.1', :require => 'stripe_mock'
