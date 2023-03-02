@@ -8,9 +8,18 @@ class Api::V1::SubscriptionsController < ApplicationController
     end
 
     def create
-        @subscription = Subscription.new(subscription_params)
+        # check if email already exists
+        @subscription = Subscription.where(email: subscription_params[:email])[0]
+        if @subscription && !@subscription.subscribed
+            # resubscribe
+            @subscription.subscribed = true
+        else
+            # new subscription
+            @subscription = Subscription.new(subscription_params)
+        end
 
         if @subscription.save
+            NewsletterMailer.with(subscription: @subscription).subscribe_email.deliver_now
             render json: @subscription, status: :ok
         else 
             render json: { 
@@ -18,6 +27,7 @@ class Api::V1::SubscriptionsController < ApplicationController
                 status: "failed" 
             }, status: :unprocessable_entity
         end
+
     end
 
     def update
@@ -38,9 +48,19 @@ class Api::V1::SubscriptionsController < ApplicationController
           render json: { data: 'Something went wrong', status: 'failed' }
         end
     end
+
+    def unsubscribe
+        @subscription = Subscription.where(unsubscribe_hash: subscription_params[:hash])[0]
+        @subscription.subscribed = false
+
+        if @subscription.save
+            render json: { data: 'Successfully unsubscribed', status: 'sucess' }, status: :ok
+        else
+            render json: { data: 'Failed to unsubscribe', status: 'failed' }
+        end
+    end
     
     # private
-
     def set_subscription
         @subscription = Subscription.find_by_id(params[:id])
     rescue ActiveRecord::RecordNotFound => error
@@ -48,6 +68,6 @@ class Api::V1::SubscriptionsController < ApplicationController
     end
 
     def subscription_params
-        params.require(:subscription).permit(:email, :subscribed, :enabled)
+        params.require(:subscription).permit(:email, :subscribed, :enabled, :hash)
     end
 end

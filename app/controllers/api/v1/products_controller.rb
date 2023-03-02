@@ -51,9 +51,9 @@ class Api::V1::ProductsController < ApplicationController
         update_field = params[:product][:field]
         # update_field = "default_price" if update_field == "price"
 
-        logger.debug "params --------------------"
-        logger.debug "#{update_field}": params[:product][:value]
-        logger.debug "params -----------------------"
+        # logger.debug "params --------------------"
+        # logger.debug "#{update_field}": params[:product][:value]
+        # logger.debug "params -----------------------"
         if update_field == "price"
             # create new price
             @price = Stripe::Price.create({

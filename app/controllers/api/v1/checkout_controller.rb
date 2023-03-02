@@ -13,6 +13,7 @@ class Api::V1::CheckoutController < ApplicationController
           render json: { redirect_url: session.url }, status: :ok
     end
 
+    private
     def checkout_params
         params.require(:checkout).permit(:items)
     end

@@ -8,9 +8,14 @@ Rails.application.routes.draw do
   namespace :api do 
     namespace :v1 do 
       resources :subscriptions
+      # match "subscriptions/unsubscribe=" => "subscriptions#unsubscribe", via: [:post]
+      post :unsubscribe, to: 'subscriptions#unsubscribe'
+
       resources :products
+      resources :contacts, only: [:create]
+      resources :newsletters, only: [:index, :create]
+
       post :orders, to: 'orders#create'
-      post :payment_intents, to: 'payment_intents#create'
       post :checkout, to: 'checkout#create'
     end
   end
