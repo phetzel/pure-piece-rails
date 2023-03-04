@@ -1,4 +1,5 @@
 class Api::V1::ProductsController < ApplicationController
+    before_action :authenticate_user!, only: [:create, :update]
     def index
         @products = Stripe::Product.list().data
 
@@ -49,10 +50,7 @@ class Api::V1::ProductsController < ApplicationController
 
     def update
         update_field = params[:product][:field]
-        # update_field = "default_price" if update_field == "price"
 
-        # logger.debug "params --------------------"
-        # logger.debug "#{update_field}": params[:product][:value]
         # logger.debug "params -----------------------"
         if update_field == "price"
             # create new price

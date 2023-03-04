@@ -1,4 +1,5 @@
 class Api::V1::NewslettersController < ApplicationController
+    before_action :authenticate_user!, only: [:index, :create]
     def index
     end
 

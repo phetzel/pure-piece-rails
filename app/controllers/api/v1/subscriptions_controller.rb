@@ -1,5 +1,5 @@
 class Api::V1::SubscriptionsController < ApplicationController
-    before_action :authenticate_user!, only: [:destroy]
+    before_action :authenticate_user!, only: [:index, :destroy]
     before_action :set_subscription, only: [:show, :update, :destroy]
 
     def index
@@ -41,13 +41,6 @@ class Api::V1::SubscriptionsController < ApplicationController
         end  
     end
 
-    def destroy
-        if @subscription.destroy
-          render json: { data: 'Company deleted successfully', status: 'sucess' }, status: :ok
-        else
-          render json: { data: 'Something went wrong', status: 'failed' }
-        end
-    end
 
     def unsubscribe
         @subscription = Subscription.where(unsubscribe_hash: subscription_params[:hash])[0]

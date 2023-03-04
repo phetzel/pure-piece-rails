@@ -7,8 +7,9 @@ Rails.application.routes.draw do
 
   namespace :api do 
     namespace :v1 do 
+      get 'member_details' => 'members#index'
+
       resources :subscriptions
-      # match "subscriptions/unsubscribe=" => "subscriptions#unsubscribe", via: [:post]
       post :unsubscribe, to: 'subscriptions#unsubscribe'
 
       resources :products
