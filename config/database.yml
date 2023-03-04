@@ -81,6 +81,7 @@ test:
 #
 production:
   <<: *default
-  database: pure_piece_rails_production
-  username: pure_piece_rails
-  password: <%= ENV["PURE_PIECE_RAILS_DATABASE_PASSWORD"] %>
+  # database: pure_piece_rails_production
+  # username: pure_piece_rails
+  # password: <%= ENV["PURE_PIECE_RAILS_DATABASE_PASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>
