@@ -19,7 +19,7 @@ class Api::V1::CheckoutController < ApplicationController
                     key: 'subscribe',
                     label: 'Subscribe to Mailing List?',
                     type: 'dropdown',
-                    dropwdown: {
+                    dropdown: {
                         options: [
                             { label: "Yes", value: true },
                             { label: "No", value: false },
