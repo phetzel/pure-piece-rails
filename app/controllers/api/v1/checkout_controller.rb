@@ -17,7 +17,10 @@ class Api::V1::CheckoutController < ApplicationController
             custom_fields: [
                 {
                     key: 'subscribe',
-                    label: 'Subscribe to Mailing List?',
+                    label: { 
+                        custom: 'Subscribe to Mailing List?',
+                        type: 'custom'
+                    },
                     type: 'dropdown',
                     dropdown: {
                         options: [
