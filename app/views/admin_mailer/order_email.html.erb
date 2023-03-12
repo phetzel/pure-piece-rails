@@ -25,12 +25,11 @@
 
     <p>Order:</p>
     <p>--------------------------</p>
-    <%= 
-      @items.map do |item|
-        <p>"Description: #{item[:description]}"</p>
-        <p>"Amount: #{item[:quantity]}"</p>
+    <%= @items.map do |item| %>
+        <p>"Description: #{<%= item[:description] %>}"</p>
+        <p>"Amount: #{<%= item[:quantity] %>}"</p>
         <br>
-      end
-    %>
+    <%= end %>
+   
   </body>
 </html>
