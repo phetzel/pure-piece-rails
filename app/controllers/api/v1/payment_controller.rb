@@ -1,20 +1,26 @@
 class Api::V1::PaymentController < ApplicationController
     def create
-        payload = request.body.read
-        endpoint_secret = "#{Rails.application.credentials[Rails.env.to_sym][:stripe_endpoint]}"
-        sig_header = request.env['HTTP_STRIPE_SIGNATURE']
+        # payload = request.body.read
+        # endpoint_secret = "#{Rails.application.credentials[Rails.env.to_sym][:stripe_endpoint]}"
+        # sig_header = request.env['HTTP_STRIPE_SIGNATURE']
 
-        event = Stripe::Webhook.construct_event(
-            payload, sig_header, endpoint_secret
-        )
+        # event = Stripe::Webhook.construct_event(
+        #     payload, sig_header, endpoint_secret
+        # )
       
         logger.info 'event -----------------------'
         logger.info event
         logger.info 'event -----------------------'
 
-        payment_id = params[:id]
+        event_id = params[:id]
         data = params[:data][:object]
 
+        checkout_session_id = data[:id]
+        line_items = Stripe::Checkout::Session.list_line_items(checkout_session_id)
+
+        logger.info 'line_items +++++++++++++++++++++++'
+        logger.info line_items
+        logger.info 'line_items +++++++++++++++++++++++'
         payment_status = data[:payment_status]
         is_subscribing = data[:custom_fields][0][:dropdown][:value]
 
