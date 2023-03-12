@@ -1,4 +1,4 @@
-class Api::V1::StripeController < ApplicationController
+class Api::V1::PaymentController < ApplicationController
     def create
         logger.debug "params"
         logger.debug params

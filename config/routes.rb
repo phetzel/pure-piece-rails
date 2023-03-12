@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       resources :newsletters, only: [:index, :create]
 
       post :checkout, to: 'checkout#create'
-      resources :stripe
+      post :payment, to: 'payment#create'
     end
   end
 end

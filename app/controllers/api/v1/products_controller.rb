@@ -37,15 +37,7 @@ class Api::V1::ProductsController < ApplicationController
                 unit_amount_decimal: params[:product][:price] * 100
             },
             description: params[:product][:description],
-            # images: [params[:product][:image]]
         })
-
-        # logger.debug "product"
-        # logger.debug @product
-        # logger.debug "product"
-
-
-        # @product = Subscription.new(subscription_params)
     end
 
     def update
