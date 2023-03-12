@@ -16,7 +16,7 @@ class Api::V1::PaymentController < ApplicationController
         data = params[:data][:object]
 
         checkout_session_id = data[:id]
-        line_items = Stripe::Checkout::Session.list_line_items(checkout_session_id)
+        line_items = Stripe::Checkout::Session.list_line_items(checkout_session_id)[:data]
 
         logger.info 'line_items +++++++++++++++++++++++'
         logger.info line_items
@@ -24,7 +24,7 @@ class Api::V1::PaymentController < ApplicationController
         payment_status = data[:payment_status]
         is_subscribing = data[:custom_fields][0][:dropdown][:value]
 
-        amount = data[:amount_total]
+        amount = number_to_currency(data[:amount_total])
         customer = data[:customer_details]
         shipping = data[:shipping_details]
 
@@ -33,6 +33,7 @@ class Api::V1::PaymentController < ApplicationController
             amount: amount,
             customer: customer,
             shipping: shipping,
+            items: line_items,
         ).order_email.deliver_now
 
         render status: :ok
