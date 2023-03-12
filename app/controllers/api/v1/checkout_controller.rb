@@ -8,9 +8,9 @@ class Api::V1::CheckoutController < ApplicationController
 
         session = Stripe::Checkout::Session.create({
             line_items: JSON.parse(checkout_params[:items]),
-            mode: 'payment',
-            success_url: 'http://localhost:3000?checkout=1',
-            cancel_url: 'http://localhost:3000?checkout=0',
+            mode: 'payment',    
+            success_url: "#{Rails.application.credentials[Rails.env.to_sym][:app_url]}?checkout=1",
+            cancel_url:  "#{Rails.application.credentials[Rails.env.to_sym][:app_url]}?checkout=0",
             shipping_address_collection: {
                 allowed_countries: ['US']
             },
