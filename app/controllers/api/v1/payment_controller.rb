@@ -8,9 +8,9 @@ class Api::V1::PaymentController < ApplicationController
         #     payload, sig_header, endpoint_secret
         # )
       
-        logger.info 'event -----------------------'
-        logger.info event
-        logger.info 'event -----------------------'
+        # logger.info 'event -----------------------'
+        # logger.info event
+        # logger.info 'event -----------------------'
 
         event_id = params[:id]
         data = params[:data][:object]
