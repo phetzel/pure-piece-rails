@@ -1,8 +1,16 @@
 class Api::V1::PaymentController < ApplicationController
     def create
-        logger.info "params ---------------------------------"
-        logger.info params
-        logger.info "params  ---------------------------------"
+        payload = request.body.read
+        endpoint_secret = Rails.application.credentials[Rails.env.to_sym][:stripe_endpoint]
+        sig_header = request.env['HTTP_STRIPE_SIGNATURE']
+
+        event = Stripe::Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+      
+        logger.info 'event -----------------------'
+        logger.info event
+        logger.info 'event -----------------------'
 
         payment_id = params[:id]
         data = params[:data][:object]
