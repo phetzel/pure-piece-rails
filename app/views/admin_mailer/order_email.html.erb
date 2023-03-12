@@ -4,19 +4,26 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-    <p>You got a new order from <%= @order.name %>!</p>
-    <p>
-    Order details<br>
-    --------------------------
-    </p>
-    <p>Name: <%= @order.name %></p>
-    <p>Email: <%= @order.email %></p>
-    <p>Address: <%= @order.address %></p>
-    <p>
-    Order:<br>
-    ----------
-    </p>
-     <p>Price: <%= @order.price %></p>
-    <p><%= @order.description %></p>
+    <p>You got a new order from <%= @customer_name %>!</p>
+    <p>Order Total <%= @order.amount %>!</p>
+    <br>
+
+    <p>Order details</p>
+    <p>--------------------------</p>
+    <p>Name: <%= @customer_name %></p>
+    <p>Email: <%= @customer_email %></p>
+    <br>
+
+    <p>Shipping details</p>
+    <p>--------------------------</p>
+    <p>Name: <%= @shipping_name %></p>
+    <p>Address:</p>
+    <p><%= @shipping_address.line1 %></p>
+    <p><%= @shipping_address.line2 %></p>
+    <p><%= "#{@shipping_address.city} #{@shipping_address.state} #{@shipping_address.postal_code} #{@shipping_address.country}" %></p>
+    <br>
+
+    <p>Order:</p>
+    <p>--------------------------</p>
   </body>
 </html>

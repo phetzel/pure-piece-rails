@@ -8,7 +8,12 @@ class AdminMailer < ApplicationMailer
     end
 
     def order_email
-        @order = params[:order]
-        mail(to: Rails.application.credentials[Rails.env.to_sym][:gmail_email], subject: "You got a new order!")
+        @amount = params[:amount]
+        @customer_name = params[:customer][:name]
+        @customer_email = params[:customer][:email]
+        @shipping_name = params[:shipping][:name]
+        @shipping_address = params[:shipping][:address]
+
+        mail(to: Rails.application.credentials[Rails.env.to_sym][:gmail_email], subject: "New Order")
     end
 end
