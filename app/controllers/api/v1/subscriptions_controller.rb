@@ -1,5 +1,5 @@
 class Api::V1::SubscriptionsController < ApplicationController
-    before_action :authenticate_user!, only: [:index, :destroy]
+    before_action :authenticate_user!, only: [:index, :update, :destroy]
     before_action :set_subscription, only: [:show, :update, :destroy]
 
     def index
