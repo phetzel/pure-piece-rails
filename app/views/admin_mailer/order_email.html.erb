@@ -25,11 +25,11 @@
 
     <p>Order:</p>
     <p>--------------------------</p>
-    <%= @items.each do |item| %>
+    <% @items.each do |item| %>
         <p><%= "Description: #{item[:description]}" %></p>
         <p><%= "Amount: #{item[:quantity]}" %></p>
         <br>
-    <%= end %>
+    <% end %>
    
   </body>
 </html>
