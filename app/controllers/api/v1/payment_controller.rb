@@ -18,13 +18,11 @@ class Api::V1::PaymentController < ApplicationController
         checkout_session_id = data[:id]
         line_items = Stripe::Checkout::Session.list_line_items(checkout_session_id)[:data]
 
-        logger.info 'line_items +++++++++++++++++++++++'
-        logger.info line_items
-        logger.info 'line_items +++++++++++++++++++++++'
         payment_status = data[:payment_status]
         is_subscribing = data[:custom_fields][0][:dropdown][:value]
 
-        amount = ActionController::Base.helpers.number_to_currency(data[:amount_total])
+        # amount = ActionController::Base.helpers.number_to_currency(data[:amount_total])
+        amount = data[:amount_total].rjust(3, "0").insert(-3, ".")
         customer = data[:customer_details]
         shipping = data[:shipping_details]
 
