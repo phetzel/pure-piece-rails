@@ -22,7 +22,7 @@ class Api::V1::PaymentController < ApplicationController
         is_subscribing = data[:custom_fields][0][:dropdown][:value]
 
         # amount = ActionController::Base.helpers.number_to_currency(data[:amount_total])
-        amount = data[:amount_total].rjust(3, "0").insert(-3, ".")
+        amount = data[:amount_total].to_f / 100
         customer = data[:customer_details]
         shipping = data[:shipping_details]
 
