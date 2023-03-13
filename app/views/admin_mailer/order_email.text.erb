@@ -18,6 +18,6 @@ Address:
 Order:
 --------------------------
 <%= @items.each do |item| %>
-"Description: #{<%= item[:description] %>}"
-"Amount: #{<%= item[:quantity] %>}"
+<%= "Description: #{item[:description]}" %>
+<%= "Amount: #{item[:quantity]}" %>
 <%= end %>

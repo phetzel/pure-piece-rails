@@ -26,8 +26,8 @@
     <p>Order:</p>
     <p>--------------------------</p>
     <%= @items.each do |item| %>
-        <p>"Description: #{<%= item[:description] %>}"</p>
-        <p>"Amount: #{<%= item[:quantity] %>}"</p>
+        <p><%= "Description: #{item[:description]}" %></p>
+        <p><%= "Amount: #{item[:quantity]}" %></p>
         <br>
     <%= end %>
    
