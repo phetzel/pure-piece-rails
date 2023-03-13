@@ -21,10 +21,20 @@ class Api::V1::PaymentController < ApplicationController
         payment_status = data[:payment_status]
         is_subscribing = data[:custom_fields][0][:dropdown][:value]
 
-        # amount = ActionController::Base.helpers.number_to_currency(data[:amount_total])
         amount = data[:amount_total].to_f / 100
         customer = data[:customer_details]
         shipping = data[:shipping_details]
+
+        if is_subscribing
+            @subscription = Subscription.where(email: customer[:email])[0]
+            if @subscription && !@subscription.subscribed
+                # resubscribe
+                @subscription.subscribed = true
+            else
+                # new subscription
+                @subscription = Subscription.new(email: customer[:email])
+            end
+        end
 
 
         AdminMailer.with(

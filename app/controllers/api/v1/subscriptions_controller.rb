@@ -19,7 +19,6 @@ class Api::V1::SubscriptionsController < ApplicationController
         end
 
         if @subscription.save
-            NewsletterMailer.with(subscription: @subscription).subscribe_email.deliver_now
             render json: @subscription, status: :ok
         else 
             render json: { 
