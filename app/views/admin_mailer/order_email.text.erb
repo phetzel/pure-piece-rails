@@ -17,7 +17,7 @@ Address:
 
 Order:
 --------------------------
-<%= @items.map do |item| %>
+<%= @items.each do |item| %>
 "Description: #{<%= item[:description] %>}"
 "Amount: #{<%= item[:quantity] %>}"
 <%= end %>
