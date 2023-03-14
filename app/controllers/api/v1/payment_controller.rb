@@ -33,6 +33,7 @@ class Api::V1::PaymentController < ApplicationController
             else
                 # new subscription
                 @subscription = Subscription.new(email: customer[:email])
+                @subscription.save
             end
         end
 
