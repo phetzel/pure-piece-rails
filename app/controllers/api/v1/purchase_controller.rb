@@ -6,6 +6,7 @@ class Api::V1::PurchaseController < ApplicationController
 
     def show
         data = Stripe::Checkout::Session.retrieve(params[:id])
+        shipping = data[:shipping_details]
         logger.info 'data -----------------------'
         logger.info data
         logger.info 'data -----------------------'
@@ -13,6 +14,7 @@ class Api::V1::PurchaseController < ApplicationController
         line_items = Stripe::Checkout::Session.list_line_items(params[:id])[:data]
         render json: {
             id: params[:id],
+            shipping: shipping,
             items: line_items
         }, status: :ok
     end
