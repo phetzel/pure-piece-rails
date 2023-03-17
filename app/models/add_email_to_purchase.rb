@@ -1,0 +1,2 @@
+class AddEmailToPurchase < ApplicationRecord
+end
