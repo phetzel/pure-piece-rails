@@ -8,7 +8,6 @@ class Api::V1::PurchaseController < ApplicationController
         line_items = Stripe::Checkout::Session.list_line_items(params[:id])[:data]
         render json: {
             id: params[:id],
-            amount: amount,
             items: line_items
         }, status: :ok
     end
