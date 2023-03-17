@@ -5,7 +5,7 @@ class Api::V1::PurchaseController < ApplicationController
     end
 
     def show
-        line_items = Stripe::Checkout::Session.list_line_items(checkout_session_id)[:data]
+        line_items = Stripe::Checkout::Session.list_line_items(params[:id])[:data]
         render json: {
             id: checkout_session_id,
             amount: amount,
