@@ -8,12 +8,14 @@ class Api::V1::PaymentController < ApplicationController
         #     payload, sig_header, endpoint_secret
         # )
       
-        # logger.info 'event -----------------------'
-        # logger.info event
-        # logger.info 'event -----------------------'
+
 
         event_id = params[:id]
         data = params[:data][:object]
+
+        logger.info 'data -----------------------'
+        logger.info data
+        logger.info 'data -----------------------'
 
         checkout_session_id = data[:id]
         line_items = Stripe::Checkout::Session.list_line_items(checkout_session_id)[:data]
