@@ -1,4 +1,9 @@
 class Api::V1::PaymentController < ApplicationController
+    def index
+        @purchases = Purchase.all
+        render json: @purchases, status: :ok
+    end
+
     def create
         # payload = request.body.read
         # endpoint_secret = "#{Rails.application.credentials[Rails.env.to_sym][:stripe_endpoint]}"
@@ -26,7 +31,9 @@ class Api::V1::PaymentController < ApplicationController
         amount = data[:amount_total].to_f / 100
         customer = data[:customer_details]
         shipping = data[:shipping_details]
+        payment_id = data[:payment_intent]
 
+        # handle newletter
         if is_subscribing
             @subscription = Subscription.where(email: customer[:email])[0]
             if @subscription && !@subscription.subscribed
@@ -39,7 +46,11 @@ class Api::V1::PaymentController < ApplicationController
             end
         end
 
+        # add purchase to database
+        @purchase = Purchase.new(stripe_id: payment_id, fulfilled: false)
+        @purchase.save
 
+        # notify admin of purchase
         AdminMailer.with(
             amount: amount,
             customer: customer,
@@ -50,38 +61,4 @@ class Api::V1::PaymentController < ApplicationController
         render status: :ok
     end
 end
-
-# params
-#   id
-#   [data]
-#       [object]
-#           ! amount_total
-#           ??? automatic_tax
-#           ! [custom_fields][0] 
-#               ! [dropdown]
-#                   ! value
-#           ! [customer_details]
-#               ! email
-#               ! name
-#           ??? invoice
-#           ??? invoice_creation
-#           ! payment_status
-#           ! [shipping_details]
-#               ! [address]
-#                   ! city
-#                   ! country
-#                   ! line1
-#                   ! line2
-#                   ! postal_code
-#                   ! state
-#               ! name
-#           ??? shipping_options
-#           ??? status
-#           ??? total_details
-#       [/object]
-#   [/data]
-#   ??? [request]
-#   ??? type
-#   [stripe]
-
 
