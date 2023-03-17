@@ -4,6 +4,15 @@ class Api::V1::PurchaseController < ApplicationController
         render json: @purchases, status: :ok
     end
 
+    def show
+        line_items = Stripe::Checkout::Session.list_line_items(checkout_session_id)[:data]
+        render json: {
+            id: checkout_session_id,
+            amount: amount,
+            items: line_items
+        }, status: :ok
+    end
+
     def create
         # payload = request.body.read
         # endpoint_secret = "#{Rails.application.credentials[Rails.env.to_sym][:stripe_endpoint]}"
@@ -47,7 +56,11 @@ class Api::V1::PurchaseController < ApplicationController
         end
 
         # add purchase to database
-        @purchase = Purchase.new(stripe_id: payment_id, fulfilled: false)
+        @purchase = Purchase.new(
+            stripe_id: checkout_session_id, 
+            fulfilled: false,
+            email: customer[:email]
+        )
         @purchase.save
 
         # notify admin of purchase
