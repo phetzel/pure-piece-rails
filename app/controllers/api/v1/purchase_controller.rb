@@ -1,4 +1,4 @@
-class Api::V1::PaymentController < ApplicationController
+class Api::V1::PurchaseController < ApplicationController
     def index
         @purchases = Purchase.all
         render json: @purchases, status: :ok
