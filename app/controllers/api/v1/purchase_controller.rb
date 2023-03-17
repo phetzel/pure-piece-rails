@@ -5,16 +5,16 @@ class Api::V1::PurchaseController < ApplicationController
     end
 
     def show
-        data = Stripe::Checkout::Session(params[:id])
+        data = Stripe::Checkout::Session.retrieve(params[:id])
         logger.info 'data -----------------------'
         logger.info data
         logger.info 'data -----------------------'
         
-        # line_items = Stripe::Checkout::Session.list_line_items(params[:id])[:data]
-        # render json: {
-        #     id: params[:id],
-        #     items: line_items
-        # }, status: :ok
+        line_items = Stripe::Checkout::Session.list_line_items(params[:id])[:data]
+        render json: {
+            id: params[:id],
+            items: line_items
+        }, status: :ok
     end
 
     def create
