@@ -1,4 +1,5 @@
 class Api::V1::PurchaseController < ApplicationController
+    before_action :authenticate_user!, only: [:index, :update]
     def index
         @purchases = Purchase.all
         render json: @purchases, status: :ok
@@ -7,9 +8,6 @@ class Api::V1::PurchaseController < ApplicationController
     def show
         data = Stripe::Checkout::Session.retrieve(params[:id])
         shipping = data[:shipping_details]
-        logger.info 'data -----------------------'
-        logger.info data
-        logger.info 'data -----------------------'
         
         line_items = Stripe::Checkout::Session.list_line_items(params[:id])[:data]
         render json: {
@@ -20,16 +18,6 @@ class Api::V1::PurchaseController < ApplicationController
     end
 
     def create
-        # payload = request.body.read
-        # endpoint_secret = "#{Rails.application.credentials[Rails.env.to_sym][:stripe_endpoint]}"
-        # sig_header = request.env['HTTP_STRIPE_SIGNATURE']
-
-        # event = Stripe::Webhook.construct_event(
-        #     payload, sig_header, endpoint_secret
-        # )
-      
-
-
         event_id = params[:id]
         data = params[:data][:object]
 
@@ -78,6 +66,22 @@ class Api::V1::PurchaseController < ApplicationController
         ).order_email.deliver_now
 
         render status: :ok
+    end
+
+    def update
+        if @purchase.update(subscription_params)
+            render json: @purchase, status: :ok
+        else
+            render json: { 
+                data: @purchase.errors.full_messages, 
+                status: "failed" 
+            }, status: :unprocessable_entity
+        end  
+    end
+
+    private
+    def purchase_params
+        params.require(:purchase).permit(:fulfilled)
     end
 end
 
