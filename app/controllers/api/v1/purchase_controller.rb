@@ -69,7 +69,9 @@ class Api::V1::PurchaseController < ApplicationController
     end
 
     def update
-        if @purchase.update(subscription_params)
+        @purchase = Purchase.find_by_id(params[:id])
+        
+        if @purchase.update(purchase_params)
             render json: @purchase, status: :ok
         else
             render json: { 
@@ -81,7 +83,7 @@ class Api::V1::PurchaseController < ApplicationController
 
     private
     def purchase_params
-        params.require(:purchase).permit(:fulfilled)
+        params.require(:purchase).permit(:id, :fulfilled)
     end
 end
 
