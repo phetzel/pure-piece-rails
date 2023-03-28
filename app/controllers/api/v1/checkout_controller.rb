@@ -67,6 +67,9 @@ class Api::V1::CheckoutController < ApplicationController
                     shipping_rate_data: standard_shipping
                 }
             ],
+            automatic_tax: {
+                enabled: true
+              },
             custom_fields: [
                 {
                     key: 'subscribe',
