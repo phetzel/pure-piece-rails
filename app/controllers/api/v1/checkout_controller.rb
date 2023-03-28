@@ -39,11 +39,11 @@ class Api::V1::CheckoutController < ApplicationController
             delivery_estimate: {
                 minimum: {
                     unit: 'business_day',
-                    value: 5,
+                    value: 1,
                 },
                 maximum: {
                     unit: 'business_day',
-                    value: 7,
+                    value: 2,
                 },
             },
         }
@@ -62,6 +62,9 @@ class Api::V1::CheckoutController < ApplicationController
             shipping_options: [
                 {
                     shipping_rate_data: free_shipping
+                },
+                {
+                    shipping_rate_data: standard_shipping
                 }
             ],
             custom_fields: [
