@@ -10,6 +10,46 @@ class Api::V1::CheckoutController < ApplicationController
         logger.info items
         logger.info 'items items items items items'
 
+        free_shipping = {
+            type: 'fixed_amount',
+            fixed_amount: {
+                amount: 0,
+                currency: 'usd',
+            },
+            display_name: 'Free shipping',
+            delivery_estimate: {
+                minimum: {
+                    unit: 'business_day',
+                    value: 5,
+                },
+                maximum: {
+                    unit: 'business_day',
+                    value: 7,
+                },
+            },
+        }
+
+        standard_shipping = {
+            type: 'fixed_amount',
+            fixed_amount: {
+                amount: 1000,
+                currency: 'usd',
+            },
+            display_name: 'Standard',
+            delivery_estimate: {
+                minimum: {
+                    unit: 'business_day',
+                    value: 5,
+                },
+                maximum: {
+                    unit: 'business_day',
+                    value: 7,
+                },
+            },
+        }
+
+
+
 
         session = Stripe::Checkout::Session.create({
             line_items: JSON.parse(checkout_params[:items]),
@@ -21,22 +61,7 @@ class Api::V1::CheckoutController < ApplicationController
             },
             shipping_options: [
                 {
-                    type: 'fixed_amount',
-                    fixed_amount: {
-                        amount: 5,
-                        urrency: 'usd',
-                    },
-                    display_name: 'Next day air',
-                    delivery_estimate: {
-                        minimum: {
-                            unit: 'business_day',
-                            value: 1,
-                        },
-                        maximum: {
-                            unit: 'business_day',
-                            value: 1,
-                        },
-                    },
+                    shipping_rate_data: free_shipping
                 }
             ],
             custom_fields: [
