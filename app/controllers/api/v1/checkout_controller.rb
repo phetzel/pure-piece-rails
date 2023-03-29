@@ -13,8 +13,13 @@ class Api::V1::CheckoutController < ApplicationController
             item_shipping += amount * item["quantity"]
         end
 
-        shipping_label = item_shipping > 20000 ? "Free Shipping"
-        shipping_amount = item_shipping > 0 ? 5000
+
+        logger.info 'item_shipping -----------------------'
+        logger.info item_shipping
+        logger.info 'item_shipping -----------------------'
+
+        shipping_label = item_shipping > 2000 ? "Free Shipping" : "Standard Shippingt"
+        shipping_amount = item_shipping > 2000 ? 0 : 5000
 
         session = Stripe::Checkout::Session.create({
             line_items: items,
