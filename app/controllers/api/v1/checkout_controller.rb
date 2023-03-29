@@ -6,16 +6,18 @@ class Api::V1::CheckoutController < ApplicationController
         # automatic_tax
         # custom_fields
         items = JSON.parse(checkout_params[:items])
-        logger.info 'items items items items items'
-        logger.info items
-        logger.info 'items items items items items'
 
+        item_shipping = 0
+        items.each do |item| 
+            amount = Stripe::Price.retrieve(item["price"])["unit_amount"]
+            item_shipping += amount * item["quantity"]
+        end
 
-
-
+        shipping_label = item_shipping > 20000 ? "Free Shipping"
+        shipping_amount = item_shipping > 0 ? 5000
 
         session = Stripe::Checkout::Session.create({
-            line_items: JSON.parse(checkout_params[:items]),
+            line_items: items,
             mode: 'payment',    
             success_url: "#{Rails.application.credentials[Rails.env.to_sym][:app_url]}?checkout=1",
             cancel_url:  "#{Rails.application.credentials[Rails.env.to_sym][:app_url]}?checkout=0",
@@ -27,10 +29,10 @@ class Api::V1::CheckoutController < ApplicationController
                     shipping_rate_data: {
                         type: 'fixed_amount',
                         fixed_amount: {
-                            amount: 0,
+                            amount: shipping_amount,
                             currency: 'usd',
                         },
-                        display_name: 'Free shipping',
+                        display_name: shipping_label,
                         delivery_estimate: {
                             minimum: {
                                 unit: 'business_day',
